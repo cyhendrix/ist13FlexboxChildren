@@ -83,8 +83,8 @@ section {
 const $=id=>document.getElementById(id),MAX=250;let scores={review:0,target:0,debug:0,write:0,apply:0},missedMap={},reviewAnswers=Array(5).fill(null),targetAnswers=Array(4).fill(null),debugAnswers={d1:false,d2:false,d3:false},reviewIndex=0,targetIndex=0;
 const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const questions=shuffle([
-{q:'Which property changes the visual position of one flex child?',a:'order',w:['display','flex-wrap','justify-content'],e:'The order property changes where one child appears.'},
-{q:'Which property lets one child use a different alignment?',a:'align-self',w:['align-items','flex-direction','display'],e:'align-self overrides alignment for one flex child.'},
+{q:'Which property changes the sequence in which one flex child appears before or after its siblings?',a:'order',w:['display','flex-wrap','justify-content'],e:'The order property changes when a child appears in the sequence of flex items.'},
+{q:'Which property changes the alignment of only one flex child across the container?',a:'align-self',w:['align-items','flex-direction','display'],e:'align-self changes the alignment of one child without changing the other children.'},
 {q:'Which property allows one child to take more available space?',a:'flex-grow',w:['flex-wrap','order','justify-content'],e:'flex-grow controls how much a child grows relative to other children.'},
 {q:'Which property controls how much one child becomes smaller?',a:'flex-shrink',w:['flex-direction','align-content','order'],e:'flex-shrink controls how much a child shrinks relative to other children.'},
 {q:'What must the parent container include before child Flexbox properties work?',a:'display: flex;',w:['order: 0;','flex-grow: 1;','align-self: center;'],e:'The parent must establish the Flexbox layout with display: flex;.'}
