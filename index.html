@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lesson 13 - Flexbox Children Practice Lab</title>
+<style>
+:root{--p:#51217a;--pd:#281538;--g:#f2c94c;--cream:#fff8dc;--pale:#f6f0f8;--ok:#087f4f;--bad:#b42318;--ink:#16131a;--line:#d9cce2}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#f8f3fa,#fff9e9)}main{max-width:1140px;margin:auto;padding:22px}.hero{display:flex;justify-content:space-between;gap:20px;align-items:center;background:var(--p);color:#fff;border-bottom:7px solid var(--g);border-radius:18px;padding:22px 26px;box-shadow:0 8px 22px #32134a26}.hero h1{margin:3px 0;font-size:clamp(1.8rem,4vw,2.7rem)}.hero p{margin:5px 0}.eyebrow{color:var(--g);font-weight:800;letter-spacing:.08em}.scorebox{min-width:140px;text-align:center;background:#fff;color:var(--p);padding:13px;border-radius:14px}.scorebox strong{display:block;font-size:2rem}.student,.reminder,.panel,.submitbox{background:#fff;border:2px solid var(--line);border-radius:16px;padding:19px;margin-top:18px}.student,.submitbox{background:var(--cream);border-color:#d6ae20}.student h2,.submitbox h3{margin-top:0;background:var(--p);color:#fff;padding:10px 13px;border-left:7px solid var(--g);border-radius:8px}.fields,.editors{display:grid;grid-template-columns:1fr 1fr;gap:15px}label{font-weight:750;display:block}input,select,textarea{width:100%;margin-top:6px;border:2px solid var(--p);border-radius:9px;padding:11px;font:inherit;background:#fff}textarea{min-height:170px;font-family:Consolas,monospace;line-height:1.45}.reminder h2,.panel h2{color:var(--p);margin-top:0}.reminder pre{white-space:pre-wrap;background:var(--pd);color:#fff;padding:14px;border-radius:10px;font:700 1rem/1.45 Consolas,monospace}.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}.tab,.action{border:2px solid var(--p);background:#fff;color:var(--p);font-weight:800;padding:10px 15px;border-radius:10px;cursor:pointer}.tab.active,.action{background:var(--p);color:#fff}.action.secondary{background:#fff;color:var(--p)}.tab:focus,.action:focus{outline:4px solid #f2c94c88}.panel{display:none}.panel.active{display:block}.question{font-size:1.18rem;font-weight:800;margin:14px 0}.choices{display:grid;gap:9px}.choice{text-align:left;border:2px solid var(--line);background:#fff;padding:12px;border-radius:9px;cursor:pointer;font-size:1rem}.choice:hover{border-color:var(--p)}.choice.correct{border-color:var(--ok);background:#e9f8f1}.choice.wrong{border-color:var(--bad);background:#fff0ee}.feedback{display:none;margin-top:12px;padding:11px;border-radius:9px;font-weight:750}.feedback.show{display:block}.feedback.ok{background:#e9f8f1;color:#08663f}.feedback.bad{background:#fff0ee;color:var(--bad)}.buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}.progress{height:10px;background:#eadfee;border-radius:10px;overflow:hidden}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--g));width:0}.codecard{border:2px solid var(--line);border-radius:12px;padding:15px;margin:12px 0;background:#fcfafd}.codecard h3{margin-top:0;color:var(--p)}code{background:var(--pd);color:#fff;padding:2px 6px;border-radius:5px;font-family:Consolas,monospace}.preview{margin-top:15px;border:2px solid var(--line);border-radius:12px;padding:14px}.preview iframe{width:100%;height:260px;border:1px solid #bbb;background:#fff}.hidden{display:none!important}.breakdown{display:grid;gap:6px;margin:10px 0}.review{margin-top:12px}.miss{border-left:5px solid var(--bad);background:#fff5f4;padding:10px;margin:8px 0}.notice{position:fixed;inset:0;background:#1d1029bb;display:grid;place-items:center;padding:20px;z-index:10}.notice>div{background:#fff;border:6px solid var(--g);border-radius:18px;padding:28px;max-width:520px;text-align:center}.notice h2{color:var(--p)}footer{text-align:center;color:#000;font-weight:700;padding:24px}@media(max-width:720px){.hero,.fields,.editors{display:block}.scorebox{margin-top:14px}.fields>*{margin-top:12px}}
+</style>
+</head>
+<body><main>
+<header class="hero"><div><p class="eyebrow">INTRO TO SOFTWARE TECHNOLOGY</p><h1>Flexbox Children</h1><p>Lesson 13 Practice Lab - target, debug, write, and apply child properties</p></div><div class="scorebox"><strong id="score">0</strong><span>of 250 points</span></div></header>
+<section class="student"><h2>Student Information</h2><div class="fields"><label>Student Name<input id="studentName" placeholder="First and last name" autocomplete="name"></label><label>Class Period<select id="classPeriod"><option value="">Choose your class</option><option>1st Block</option><option>3rd Block</option><option>4th Block</option></select></label></div></section>
+<section class="reminder"><h2>Flexbox Children Reminder</h2><p>The parent must use <code>display: flex;</code>. Give a child its own class, then place child properties in that child rule.</p><pre>&lt;div class="cards"&gt;
+  &lt;section class="featured"&gt;Featured Club&lt;/section&gt;
+  &lt;section&gt;Another Club&lt;/section&gt;
+&lt;/div&gt;
+
+.cards {
+  display: flex;
+}
+
+.featured {
+  order: -1;
+  align-self: center;
+  flex-grow: 2;
+}</pre></section>
+<nav class="tabs" aria-label="Activities"><button class="tab active" data-panel="review">1. Review</button><button class="tab" data-panel="target">2. Parent or Child?</button><button class="tab" data-panel="debug">3. Debug</button><button class="tab" data-panel="write">4. Write CSS</button><button class="tab" data-panel="apply">5. Apply</button></nav>
+
+<section id="review" class="panel active"><h2>Review Flexbox Children</h2><p>Answer five randomized questions. Answer choices are also randomized.</p><div class="progress"><span id="reviewBar"></span></div><div id="reviewQuestion"></div><div id="reviewFeedback" class="feedback"></div><div class="buttons"><button id="reviewNext" class="action hidden">Next Question</button><button class="action secondary next-panel" data-next="target">Next Activity</button></div></section>
+
+<section id="target" class="panel"><h2>Parent Property or Child Property?</h2><p>Identify where each property belongs. The questions are randomized.</p><div class="progress"><span id="targetBar"></span></div><div id="targetQuestion"></div><div id="targetFeedback" class="feedback"></div><div class="buttons"><button id="targetNext" class="action hidden">Next Question</button><button class="action secondary next-panel" data-next="debug">Next Activity</button></div></section>
+
+<section id="debug" class="panel"><h2>Debug Child-Property Code</h2><p>Find and correct each problem. Use the hints only when needed.</p>
+<div class="codecard"><h3>Debug 1: Child selector</h3><p>The child style is not being applied.</p><details><summary>Hint</summary><p>Compare the HTML class name with the CSS selector.</p></details><textarea id="d1" spellcheck="false">&lt;section class="priority"&gt;Robotics Club&lt;/section&gt;
+
+priority {
+  order: -1;
+}</textarea><button class="action check-debug" data-id="d1">Check</button><div id="d1f" class="feedback"></div></div>
+<div class="codecard"><h3>Debug 2: Target the correct element</h3><p>Only the featured card should have a different alignment.</p><details><summary>Hint</summary><p>Ask whether align-self controls the parent or one child.</p></details><textarea id="d2" spellcheck="false">.cards {
+  display: flex;
+  align-self: center;
+}
+
+.featured {
+}</textarea><button class="action check-debug" data-id="d2">Check</button><div id="d2f" class="feedback"></div></div>
+<div class="codecard"><h3>Debug 3: Declaration punctuation</h3><p>The highlighted card should grow twice as much as the other cards.</p><details><summary>Hint</summary><p>Check the punctuation between the property and value and at the end of the declaration.</p></details><textarea id="d3" spellcheck="false">.highlighted {
+  flex-grow 2
+}</textarea><button class="action check-debug" data-id="d3">Check</button><div id="d3f" class="feedback"></div></div>
+<div class="buttons"><button class="action secondary next-panel" data-next="write">Next Activity</button></div></section>
+
+<section id="write" class="panel"><h2>Write Child Rules</h2><p>Complete both rules. The <code>.featured</code> child should move first, center itself, and grow by 2. The <code>.small</code> child should shrink by 2.</p><label>style.css<textarea id="writeCss" spellcheck="false">.featured {
+  
+}
+
+.small {
+  
+}</textarea></label><div class="buttons"><button id="checkWrite" class="action">Check My Rules</button><button id="resetWrite" class="action secondary">Reset</button><button class="action secondary next-panel" data-next="apply">Next Activity</button></div><div id="writeFeedback" class="feedback"></div></section>
+
+<section id="apply" class="panel"><h2>Apply Flexbox Child Properties</h2><p>Make the featured card appear first, align itself in the center, and grow by 2. Make the small card shrink by 2. Keep the Flexbox setup on the parent.</p><div class="editors"><label>index.html<textarea id="htmlCode" spellcheck="false">&lt;h1&gt;School Clubs&lt;/h1&gt;
+&lt;div class="cards"&gt;
+  &lt;section&gt;Art Club&lt;/section&gt;
+  &lt;section class="featured"&gt;Coding Club&lt;/section&gt;
+  &lt;section class="small"&gt;Chess Club&lt;/section&gt;
+&lt;/div&gt;</textarea></label><label>style.css<textarea id="cssCode" spellcheck="false">.cards {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+section {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: gold;
+  border: 2px solid purple;
+}
+
+/* Add the two child rules below */</textarea></label></div><div class="buttons"><button id="preview" class="action secondary">Preview Page</button><button id="checkApply" class="action">Check My Work</button><button id="resetApply" class="action secondary">Reset</button><button id="finish" class="action secondary">Finish &amp; View Grade</button></div><div id="applyFeedback" class="feedback"></div><div class="preview"><h3>Browser Preview</h3><iframe id="previewFrame" title="Student webpage preview"></iframe></div>
+<div id="submitBox" class="submitbox hidden"><h3>Submit Your Grade</h3><p id="finalResult"></p><div id="breakdown" class="breakdown"></div><p>Skipped or incorrect work receives zero points.</p><div class="buttons"><button id="submitResults" class="action">Submit My Results</button><button id="reviewMissed" class="action secondary hidden">Review Incorrect Answers</button></div><div id="missedList" class="review hidden"></div><div id="submitFeedback" class="feedback"></div></div></section>
+<iframe name="resultsTarget" class="hidden" title="Grade submission target"></iframe>
+</main><footer>Lesson 13 Flexbox Children Practice Lab - Submit your results before closing</footer>
+<div id="submissionNotice" class="notice hidden"><div><h2>Grade Submitted!</h2><p id="submissionNoticeText"></p><button id="closeNotice" class="action">Close</button></div></div>
+<script>
+const $=id=>document.getElementById(id),MAX=250;let scores={review:0,target:0,debug:0,write:0,apply:0},missed=[],reviewIndex=0,targetIndex=0,locked=false;
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const questions=shuffle([
+{q:'Which property changes the visual position of one flex child?',a:'order',w:['display','flex-wrap','justify-content'],e:'The order property changes where one child appears.'},
+{q:'Which property lets one child use a different alignment?',a:'align-self',w:['align-items','flex-direction','display'],e:'align-self overrides alignment for one flex child.'},
+{q:'Which property allows one child to take more available space?',a:'flex-grow',w:['flex-wrap','order','justify-content'],e:'flex-grow controls how much a child grows relative to other children.'},
+{q:'Which property controls how much one child becomes smaller?',a:'flex-shrink',w:['flex-direction','align-content','order'],e:'flex-shrink controls how much a child shrinks relative to other children.'},
+{q:'What must the parent container include before child Flexbox properties work?',a:'display: flex;',w:['order: 0;','flex-grow: 1;','align-self: center;'],e:'The parent must establish the Flexbox layout with display: flex;.'}
+]);
+const targetQuestions=shuffle([{q:'display: flex;',a:'Parent container'},{q:'justify-content: center;',a:'Parent container'},{q:'order: -1;',a:'Individual child'},{q:'align-self: center;',a:'Individual child'}]);
+function escapeHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}function escapeAttr(s){return escapeHtml(s).replace(/"/g,'&quot;')}
+function feedback(id,ok,msg){const e=$(id);e.textContent=msg;e.className='feedback show '+(ok?'ok':'bad')}function total(){return Object.values(scores).reduce((a,b)=>a+b,0)}function updateScore(){$('score').textContent=total()}function award(section,points,max){scores[section]=Math.min(max,Math.max(scores[section],points));updateScore()}
+function showPanel(id){document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.panel===id));scrollTo({top:0,behavior:'smooth'})}document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>showPanel(b.dataset.panel));document.querySelectorAll('.next-panel').forEach(b=>b.onclick=()=>showPanel(b.dataset.next));
+function renderReview(){if(reviewIndex>=questions.length){$('reviewQuestion').innerHTML='<h3>Review complete.</h3><p>Continue to Parent or Child.</p>';$('reviewNext').classList.add('hidden');$('reviewBar').style.width='100%';return}locked=false;const q=questions[reviewIndex],choices=shuffle([q.a,...q.w]);$('reviewBar').style.width=(reviewIndex/questions.length*100)+'%';$('reviewQuestion').innerHTML=`<p class="question">${reviewIndex+1}. ${escapeHtml(q.q)}</p><div class="choices">${choices.map(c=>`<button class="choice" data-choice="${escapeAttr(c)}">${escapeHtml(c)}</button>`).join('')}</div>`;$('reviewFeedback').className='feedback';document.querySelectorAll('#reviewQuestion .choice').forEach(b=>b.onclick=()=>{if(locked)return;locked=true;const ok=b.dataset.choice===q.a;b.classList.add(ok?'correct':'wrong');document.querySelectorAll('#reviewQuestion .choice').forEach(x=>{x.disabled=true;if(x.dataset.choice===q.a)x.classList.add('correct')});if(ok){scores.review+=10;updateScore();feedback('reviewFeedback',true,'Correct! +10 points')}else{missed.push({section:'Review',question:q.q,yours:b.dataset.choice,correct:q.a,explanation:q.e});feedback('reviewFeedback',false,'Not quite. '+q.e)}$('reviewNext').classList.remove('hidden')})}$('reviewNext').onclick=()=>{reviewIndex++;renderReview()};
+function renderTarget(){if(targetIndex>=targetQuestions.length){$('targetQuestion').innerHTML='<h3>Property sort complete.</h3><p>Continue to debugging.</p>';$('targetNext').classList.add('hidden');$('targetBar').style.width='100%';return}locked=false;const q=targetQuestions[targetIndex],choices=shuffle(['Parent container','Individual child']);$('targetBar').style.width=(targetIndex/targetQuestions.length*100)+'%';$('targetQuestion').innerHTML=`<p class="question">Where does <code>${escapeHtml(q.q)}</code> belong?</p><div class="choices">${choices.map(c=>`<button class="choice" data-choice="${c}">${c}</button>`).join('')}</div>`;$('targetFeedback').className='feedback';document.querySelectorAll('#targetQuestion .choice').forEach(b=>b.onclick=()=>{if(locked)return;locked=true;const ok=b.dataset.choice===q.a;b.classList.add(ok?'correct':'wrong');document.querySelectorAll('#targetQuestion .choice').forEach(x=>{x.disabled=true;if(x.dataset.choice===q.a)x.classList.add('correct')});if(ok){scores.target+=10;updateScore();feedback('targetFeedback',true,'Correct! +10 points')}else{missed.push({section:'Parent or Child',question:q.q,yours:b.dataset.choice,correct:q.a,explanation:q.a==='Parent container'?'This property controls the group from the parent.':'This property controls one child.'});feedback('targetFeedback',false,`This property belongs on the ${q.a.toLowerCase()}.`)}$('targetNext').classList.remove('hidden')})}$('targetNext').onclick=()=>{targetIndex++;renderTarget()};
+const debugChecks={d1:v=>/class\s*=\s*["']priority["']/i.test(v)&&/\.priority\s*\{[\s\S]*order\s*:\s*-1\s*;/i.test(v),d2:v=>/\.cards\s*\{(?:(?!align-self)[\s\S])*\}/i.test(v)&&/\.featured\s*\{[\s\S]*align-self\s*:\s*center\s*;?[\s\S]*\}/i.test(v),d3:v=>/\.highlighted\s*\{[\s\S]*flex-grow\s*:\s*2\s*;[\s\S]*\}/i.test(v)};
+document.querySelectorAll('.check-debug').forEach(b=>b.onclick=()=>{const id=b.dataset.id,ok=debugChecks[id]($(id).value);if(ok){b.disabled=true;scores.debug+=20;updateScore();feedback(id+'f',true,'Correct! +20 points')}else feedback(id+'f',false,'Check the selector, the target element, and declaration punctuation.')});
+const defaultWrite=$('writeCss').value;function has(v,p,val){return new RegExp(p+'\\s*:\\s*'+val+'\\s*;?','i').test(v)}
+$('checkWrite').onclick=()=>{const v=$('writeCss').value,featured=/\.featured\s*\{[\s\S]*\}/i.test(v)&&has(v,'order','-1')&&has(v,'align-self','center')&&has(v,'flex-grow','2'),small=/\.small\s*\{[\s\S]*flex-shrink\s*:\s*2\s*;?[\s\S]*\}/i.test(v);if(featured&&small){award('write',50,50);feedback('writeFeedback',true,'Both child rules are complete. +50 points')}else feedback('writeFeedback',false,'Check that .featured contains order: -1;, align-self: center;, and flex-grow: 2;. The .small rule needs flex-shrink: 2;.')};$('resetWrite').onclick=()=>{$('writeCss').value=defaultWrite;$('writeFeedback').className='feedback'};
+const defaultHtml=$('htmlCode').value,defaultCss=$('cssCode').value;function preview(){$('previewFrame').srcdoc=`<!doctype html><style>body{font-family:Arial}${$('cssCode').value}</style><body>${$('htmlCode').value}</body>`}$('preview').onclick=preview;
+$('checkApply').onclick=()=>{const h=$('htmlCode').value,c=$('cssCode').value,parent=/\.cards\s*\{[\s\S]*display\s*:\s*flex\s*;?[\s\S]*\}/i.test(c),html=/class\s*=\s*["']featured["']/i.test(h)&&/class\s*=\s*["']small["']/i.test(h),featured=/\.featured\s*\{[\s\S]*\}/i.test(c)&&has(c,'order','-1')&&has(c,'align-self','center')&&has(c,'flex-grow','2'),small=/\.small\s*\{[\s\S]*flex-shrink\s*:\s*2\s*;?[\s\S]*\}/i.test(c);if(parent&&html&&featured&&small){award('apply',50,50);feedback('applyFeedback',true,'Your parent and child rules work together. +50 points');preview();showResults()}else feedback('applyFeedback',false,'Keep display: flex; in .cards. Add the requested properties to .featured and .small.')};$('resetApply').onclick=()=>{$('htmlCode').value=defaultHtml;$('cssCode').value=defaultCss;$('applyFeedback').className='feedback';preview()};$('finish').onclick=showResults;
+function percent(){return Math.round(total()/MAX*100)}function label(){return`${total()} points out of ${MAX} - Grade: ${percent()}%`}function showResults(){$('submitBox').classList.remove('hidden');$('finalResult').textContent=label();$('breakdown').innerHTML=Object.entries(scores).map(([k,v])=>`<div><strong>${k[0].toUpperCase()+k.slice(1)}:</strong> ${v} points</div>`).join('');$('reviewMissed').classList.toggle('hidden',!missed.length);requestAnimationFrame(()=>$('submitBox').scrollIntoView({behavior:'smooth',block:'start'}))}
+$('reviewMissed').onclick=()=>{const box=$('missedList');box.classList.toggle('hidden');$('reviewMissed').textContent=box.classList.contains('hidden')?'Review Incorrect Answers':'Hide Review';box.innerHTML=missed.map(m=>`<div class="miss"><strong>${escapeHtml(m.section)}:</strong> ${escapeHtml(m.question)}<br><strong>Your answer:</strong> ${escapeHtml(m.yours)}<br><strong>Correct answer:</strong> ${escapeHtml(m.correct)}<br>${escapeHtml(m.explanation)}</div>`).join('')};
+$('submitResults').onclick=()=>{const name=$('studentName').value.trim(),period=$('classPeriod').value;if(!name||!period){feedback('submitFeedback',false,'Enter your name and choose your class period at the top of the lab.');return}const form=document.createElement('form');form.method='POST';form.action='https://docs.google.com/forms/d/e/1FAIpQLSd4wTjzGT39UHEQ8WdzPMXfDMhVJ8d6BzioxzQXqz5zevRWdw/formResponse';form.target='resultsTarget';form.className='hidden';[['entry.2089413779',name],['entry.890934651',period],['entry.646173439','Lesson 13 | Flexbox Children'],['entry.962158861',String(percent())]].forEach(([n,v])=>{const i=document.createElement('input');i.name=n;i.value=v;form.append(i)});document.body.append(form);form.submit();form.remove();$('submitResults').disabled=true;feedback('submitFeedback',true,'Your grade has been submitted.');$('submissionNoticeText').textContent=`${name}, your grade of ${percent()}% has been submitted.`;$('submissionNotice').classList.remove('hidden')};$('closeNotice').onclick=()=>$('submissionNotice').classList.add('hidden');renderReview();renderTarget();preview();
+</script></body></html>
