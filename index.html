@@ -31,12 +31,14 @@
 <section id="target" class="panel"><h2>Parent Property or Child Property?</h2><p>Identify where each property belongs. The questions are randomized.</p><div class="progress"><span id="targetBar"></span></div><div id="targetQuestion"></div><div id="targetFeedback" class="feedback"></div><div class="buttons"><button id="targetNext" class="action hidden">Next Question</button><button class="action secondary next-panel" data-next="debug">Next Activity</button></div></section>
 
 <section id="debug" class="panel"><h2>Debug Child-Property Code</h2><p>Find and correct each problem. Use the hints only when needed.</p>
-<div class="codecard"><h3>Debug 1: Child selector</h3><p>The child style is not being applied.</p><details><summary>Hint</summary><p>Compare the HTML class name with the CSS selector.</p></details><textarea id="d1" spellcheck="false">&lt;section class="priority"&gt;Robotics Club&lt;/section&gt;
+<div class="codecard"><h3>Debug 1: Child selector</h3><p>The child style is not being applied.</p><details><summary>Hint</summary><p>Compare the HTML class name with the CSS selector.</p></details><textarea id="d1" spellcheck="false">&lt;section class="priority"&gt;
+  Robotics Club
+&lt;/section&gt;
 
 priority {
   order: -1;
 }</textarea><button class="action check-debug" data-id="d1">Check</button><div id="d1f" class="feedback"></div></div>
-<div class="codecard"><h3>Debug 2: Target the correct element</h3><p>Only the featured card should have a different alignment.</p><details><summary>Hint</summary><p>Ask whether align-self controls the parent or one child.</p></details><textarea id="d2" spellcheck="false">.cards {
+<div class="codecard"><h3>Debug 2: Target the correct element</h3><p>The <code>.cards</code> parent arranges the entire group of cards. The goal is for only the <code>.featured</code> child to have a different alignment while the other cards stay unchanged. Find and correct the CSS problem.</p><details><summary>Hint</summary><p>Ask whether align-self controls the parent or one child.</p></details><textarea id="d2" spellcheck="false">.cards {
   display: flex;
   align-self: center;
 }
