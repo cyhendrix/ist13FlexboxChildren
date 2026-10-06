@@ -100,9 +100,100 @@ const debugChecks={d1:v=>/class\s*=\s*["']priority["']/i.test(v)&&/\.priority\s*
 document.querySelectorAll('.check-debug').forEach(b=>b.onclick=()=>{const id=b.dataset.id,ok=debugChecks[id]($(id).value);debugAnswers[id]=ok;scores.debug=Object.values(debugAnswers).filter(Boolean).length*20;updateScore();if(ok)feedback(id+'f',true,'Correct! You may edit the code and check it again.');else if(id==='d2')feedback(id+'f',false,'Not quite. The .cards parent should keep display: flex;. Place align-self: center; in the rule for the one child that should be centered. You may revise and check again.');else feedback(id+'f',false,'Check the selector, the target element, and declaration punctuation. You may revise and check again.')});
 const defaultWrite=$('writeCss').value;function has(v,p,val){return new RegExp(p+'\\s*:\\s*'+val+'\\s*;?','i').test(v)}
 $('checkWrite').onclick=()=>{const v=$('writeCss').value,featured=/\.featured\s*\{[\s\S]*\}/i.test(v)&&has(v,'order','-1')&&has(v,'align-self','center')&&has(v,'flex-grow','2'),small=/\.small\s*\{[\s\S]*flex-shrink\s*:\s*2\s*;?[\s\S]*\}/i.test(v),ok=featured&&small;scores.write=ok?50:0;updateScore();if(ok)feedback('writeFeedback',true,'Both child rules are complete. You may edit and check again.');else feedback('writeFeedback',false,'Check that .featured contains order: -1;, align-self: center;, and flex-grow: 2;. The .small rule needs flex-shrink: 2;. Revise and check again.')};$('resetWrite').onclick=()=>{$('writeCss').value=defaultWrite;scores.write=0;updateScore();$('writeFeedback').className='feedback'};
-const defaultHtml=$('htmlCode').value,defaultCss=$('cssCode').value;function preview(){$('previewFrame').srcdoc=`<!doctype html><style>body{font-family:Arial}${$('cssCode').value}</style><body>${$('htmlCode').value}</body>`}$('preview').onclick=preview;
+const defaultHtml=$('htmlCode').value,defaultCss=$('cssCode').value;function preview(){$('previewFrame').srcdoc=`<!doctype html><style>body{font-family:Arial}${$('cssCode').value}</style><body>${$('htmlCode').value}
+<style id="practiceRecoveryStyles">
+.recovery-tools{background:#fff8dc;border:3px solid #f2c94c;border-radius:14px;padding:17px 20px;margin:20px 0;box-shadow:0 7px 20px #32134a18}
+.recovery-tools h3{margin:0 0 8px;color:#51217a}.recovery-tools p{margin:7px 0;line-height:1.45}
+.recovery-tools .recovery-buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.recovery-tools button{border:2px solid #51217a;border-radius:9px;padding:11px 15px;background:#51217a;color:#fff;font-weight:800;cursor:pointer}
+.recovery-tools button.secondary{background:#fff;color:#51217a}.recovery-status{font-weight:800;margin-top:10px!important}
+</style>
+<section id="practiceRecoveryTools" class="recovery-tools">
+  <h3>Saved Work &amp; Grade Recovery</h3>
+  <p>Your name, class period, and typed answers save automatically on this computer and browser.</p>
+  <p>If a submitted grade does not appear in the score report, click <strong>Submit Grade Again</strong>.</p>
+  <div class="recovery-buttons">
+    <button id="retrySavedGrade" type="button">Submit Grade Again</button>
+    <button id="clearSavedPractice" class="secondary" type="button">Clear Saved Work</button>
+  </div>
+  <p id="practiceRecoveryStatus" class="recovery-status" role="status" aria-live="polite"></p>
+</section>
+<script id="practiceRecoveryScript">
+(function(){
+  const baseKey="istPractice:"+location.pathname;
+  const draftKey=baseKey+":draft", pendingKey=baseKey+":pending";
+  const status=()=>document.getElementById("practiceRecoveryStatus");
+  const retry=()=>document.getElementById("retrySavedGrade");
+  let submittedNow=false;
+  function fields(){
+    return [...document.querySelectorAll("input[id],select[id],textarea[id]")].filter(el=>el.type!=="hidden");
+  }
+  function saveDraft(){
+    const data={};
+    fields().forEach(el=>{
+      if(el.type==="radio"||el.type==="checkbox") data[el.id]={checked:el.checked};
+      else data[el.id]={value:el.value};
+    });
+    localStorage.setItem(draftKey,JSON.stringify(data));
+  }
+  function restoreDraft(root=document){
+    let data={};try{data=JSON.parse(localStorage.getItem(draftKey)||"{}")}catch(e){}
+    [...root.querySelectorAll("input[id],select[id],textarea[id]")].forEach(el=>{
+      const v=data[el.id];if(!v)return;
+      if(el.type==="radio"||el.type==="checkbox") el.checked=!!v.checked;
+      else if(!el.value||el.tagName==="TEXTAREA") el.value=v.value??"";
+    });
+  }
+  document.addEventListener("input",saveDraft);
+  document.addEventListener("change",saveDraft);
+  const observer=new MutationObserver(list=>list.forEach(m=>m.addedNodes.forEach(n=>{
+    if(n.nodeType===1)restoreDraft(n);
+  })));
+  observer.observe(document.documentElement,{childList:true,subtree:true});
+  const nativeSubmit=HTMLFormElement.prototype.submit;
+  HTMLFormElement.prototype.submit=function(){
+    if(String(this.action).includes("docs.google.com/forms")){
+      const payload={action:this.action,target:this.target||"practiceRecoveryTarget",values:{}};
+      new FormData(this).forEach((v,k)=>payload.values[k]=String(v));
+      localStorage.setItem(pendingKey,JSON.stringify(payload));
+      submittedNow=true;
+      if(status())status().textContent="Sending grade to Google Forms… Keep this page open for a few seconds.";
+      if(retry())retry().disabled=false;
+    }
+    return nativeSubmit.call(this);
+  };
+  function send(payload){
+    let frame=document.querySelector('iframe[name="'+payload.target+'"]');
+    if(!frame){frame=document.createElement("iframe");frame.name=payload.target;frame.hidden=true;document.body.append(frame)}
+    const form=document.createElement("form");form.method="POST";form.action=payload.action;form.target=payload.target;form.hidden=true;
+    Object.entries(payload.values).forEach(([name,value])=>{const i=document.createElement("input");i.name=name;i.value=value;form.append(i)});
+    document.body.append(form);submittedNow=true;nativeSubmit.call(form);setTimeout(()=>form.remove(),1000);
+    if(status())status().textContent="Grade sent again. Keep this page open for five seconds, then check the score report.";
+  }
+  document.addEventListener("DOMContentLoaded",()=>{
+    restoreDraft();
+    const pending=localStorage.getItem(pendingKey);
+    if(status())status().textContent=pending?"A saved grade is available if you need to submit it again.":"Typed work will save automatically on this device.";
+    document.querySelectorAll("iframe[name]").forEach(frame=>frame.addEventListener("load",()=>{
+      if(!submittedNow)return;submittedNow=false;
+      if(status())status().textContent="Google Forms responded. Your grade was sent; use Submit Grade Again if it is missing from the report.";
+    }));
+    retry().onclick=()=>{
+      let p;try{p=JSON.parse(localStorage.getItem(pendingKey)||"null")}catch(e){}
+      if(!p){status().textContent="No saved grade is available yet. Finish the lab and click Submit My Results first.";return}
+      retry().disabled=true;send(p);setTimeout(()=>retry().disabled=false,5000);
+    };
+    document.getElementById("clearSavedPractice").onclick=()=>{
+      if(!confirm("Clear saved work and the saved grade from this computer?"))return;
+      localStorage.removeItem(draftKey);localStorage.removeItem(pendingKey);
+      status().textContent="Saved work was cleared. Refresh the page to start over.";
+    };
+  });
+})();
+</script>
+</body>`}$('preview').onclick=preview;
 $('checkApply').onclick=()=>{const h=$('htmlCode').value,c=$('cssCode').value,parent=/\.cards\s*\{[\s\S]*display\s*:\s*flex\s*;?[\s\S]*\}/i.test(c),html=/class\s*=\s*["']featured["']/i.test(h)&&/class\s*=\s*["']small["']/i.test(h),featured=/\.featured\s*\{[\s\S]*\}/i.test(c)&&has(c,'order','-1')&&has(c,'align-self','center')&&has(c,'flex-grow','2'),small=/\.small\s*\{[\s\S]*flex-shrink\s*:\s*2\s*;?[\s\S]*\}/i.test(c),ok=parent&&html&&featured&&small;scores.apply=ok?50:0;updateScore();if(ok){feedback('applyFeedback',true,'Your parent and child rules work together. You may edit and check again.');preview();showResults()}else feedback('applyFeedback',false,'Keep display: flex; in .cards. Add the requested properties to .featured and .small. Revise and check again.')};$('resetApply').onclick=()=>{$('htmlCode').value=defaultHtml;$('cssCode').value=defaultCss;scores.apply=0;updateScore();$('applyFeedback').className='feedback';preview()};$('finish').onclick=showResults;
 function percent(){return Math.round(total()/MAX*100)}function label(){return`${total()} points out of ${MAX} - Grade: ${percent()}%`}function currentMissed(){return Object.values(missedMap)}function showResults(){const missed=currentMissed();$('submitBox').classList.remove('hidden');$('finalResult').textContent=label();$('breakdown').innerHTML=Object.entries(scores).map(([k,v])=>`<div><strong>${k[0].toUpperCase()+k.slice(1)}:</strong> ${v} points</div>`).join('');$('reviewMissed').classList.toggle('hidden',!missed.length);requestAnimationFrame(()=>$('submitBox').scrollIntoView({behavior:'smooth',block:'start'}))}
 $('reviewMissed').onclick=()=>{const missed=currentMissed(),box=$('missedList');box.classList.toggle('hidden');$('reviewMissed').textContent=box.classList.contains('hidden')?'Review Incorrect Answers':'Hide Review';box.innerHTML=missed.map(m=>`<div class="miss"><strong>${escapeHtml(m.section)}:</strong> ${escapeHtml(m.question)}<br><strong>Your answer:</strong> ${escapeHtml(m.yours)}<br><strong>Correct answer:</strong> ${escapeHtml(m.correct)}<br>${escapeHtml(m.explanation)}</div>`).join('')};
-$('submitResults').onclick=()=>{const first=$('firstName').value.trim(),last=$('lastName').value.trim(),name=`${last}, ${first}`,period=$('classPeriod').value;if(!first||!last||!period){feedback('submitFeedback',false,'Enter your first name, last name, and choose your class period at the top of the lab.');return}const form=document.createElement('form');form.method='POST';form.action='https://docs.google.com/forms/d/e/1FAIpQLSd4wTjzGT39UHEQ8WdzPMXfDMhVJ8d6BzioxzQXqz5zevRWdw/formResponse';form.target='resultsTarget';form.className='hidden';[['entry.2089413779',name],['entry.890934651',period],['entry.646173439','Lesson 13 | Flexbox Children'],['entry.962158861',String(percent())]].forEach(([n,v])=>{const i=document.createElement('input');i.name=n;i.value=v;form.append(i)});document.body.append(form);form.submit();form.remove();$('submitResults').disabled=true;feedback('submitFeedback',true,'Your grade has been submitted.');$('submissionNoticeText').textContent=`${first} ${last}, your grade of ${percent()}% has been submitted.`;$('submissionNotice').classList.remove('hidden')};$('closeNotice').onclick=()=>$('submissionNotice').classList.add('hidden');renderReview();renderTarget();preview();
+$('submitResults').onclick=()=>{const first=$('firstName').value.trim(),last=$('lastName').value.trim(),name=`${last}, ${first}`,period=$('classPeriod').value;if(!first||!last||!period){feedback('submitFeedback',false,'Enter your first name, last name, and choose your class period at the top of the lab.');return}const form=document.createElement('form');form.method='POST';form.action='https://docs.google.com/forms/d/e/1FAIpQLSd4wTjzGT39UHEQ8WdzPMXfDMhVJ8d6BzioxzQXqz5zevRWdw/formResponse';form.target='resultsTarget';form.className='hidden';[['entry.2089413779',name],['entry.890934651',period],['entry.646173439','Lesson 13 |'Lesson 13 | Flexbox Children for More Control'],['entry.962158861',String(percent())]].forEach(([n,v])=>{const i=document.createElement('input');i.name=n;i.value=v;form.append(i)});document.body.append(form);form.submit();form.remove();$('submitResults').disabled=true;feedback('submitFeedback',true,'Your grade has been submitted.');$('submissionNoticeText').textContent=`${first} ${last}, your grade of ${percent()}% has been submitted.`;$('submissionNotice').classList.remove('hidden')};$('closeNotice').onclick=()=>$('submissionNotice').classList.add('hidden');renderReview();renderTarget();preview();
 </script></body></html>
